@@ -33,7 +33,7 @@ public class Lab7Application {
     ProductPriceRepository productPriceRepository;
     @Autowired
     OrderRepository orderRepository;
-    @Bean
+//    @Bean
     CommandLineRunner createSampleProduct(OrderDetailRepository orderDetailRepository){
         return args -> {
             Faker faker = new Faker();

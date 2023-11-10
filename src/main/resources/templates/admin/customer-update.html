@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+
+        /* Style for labels */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        /* Style for input fields */
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Style for the submit button */
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Style for readonly input field */
+        input[readonly] {
+            background-color: #f2f2f2;
+            cursor: not-allowed;
+        }
+
+        /* Additional styling for responsiveness (adjust as needed) */
+        @media screen and (max-width: 600px) {
+            form {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+<h1>Update Customer</h1>
+<form th:action="@{/update-customer}" method="POST" th:object="${customer}">
+    <label>Id</label> <input placeholder="Id" th:field="*{id}" readonly> <br>
+    <label>Name</label> <input placeholder="Name" th:field="*{name}"> <br>
+    <label>Phone</label> <input type="number" placeholder="Phone" th:field="*{phone}"> <br>
+    <label>Email</label> <input type="email" placeholder="Email" th:field="*{email}"> <br>
+    <label>Address</label> <input placeholder="Address" th:field="*{address}"> <br>
+    <input type="submit" value="update">
+</form>
+</body>
+</html>
