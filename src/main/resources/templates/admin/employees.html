@@ -2,9 +2,89 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Customer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .inline{
+            margin-top: 20px;
+            float: left;
+            display: inline-block;
+        }
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+        .inline a {
+            padding: 8px;
+            margin: 2px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+    </style>
 </head>
 <body>
-
+<h1>Customers</h1>
+<table>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Address</th>
+        <th><button><a th:href="@{/customer-add}">Add</a></button></th>
+    </tr>
+    <tr th:each="cust, iStat:${postPage.content}">
+        <td th:text="${cust.id}"></td>
+        <td th:text="${cust.name}"></td>
+        <td th:text="${cust.phone}"></td>
+        <td th:text="${cust.email}"></td>
+        <td th:text="${cust.address}"></td>
+        <td>
+            <button><a th:href="@{/customer-update/{id}(id=${cust.id})}">update</a></button>
+            <button><a th:href="@{/delete-customer/{id}(id=${cust.id})}">Delete</a></button>
+        </td>
+    </tr>
+</table>
+<div class="inline" th:if="${postPage.totalPages>0}"
+     th:each="pageNumber, iStat:${pageNumbers}"
+>
+    <a th:href="@{/customers-paging(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber==postPage.number+1}? active"
+    ></a>
+</div>
 </body>
 </html>

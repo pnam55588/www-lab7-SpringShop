@@ -66,7 +66,7 @@
             <th>Address</th>
             <th><button><a th:href="@{/customer-add}">Add</a></button></th>
         </tr>
-        <tr th:each="cust, iStat:${postPage.content}">
+        <tr th:each="cust, iStat:${paging.content}">
             <td th:text="${cust.id}"></td>
             <td th:text="${cust.name}"></td>
             <td th:text="${cust.phone}"></td>
@@ -78,12 +78,12 @@
             </td>
         </tr>
     </table>
-    <div class="inline" th:if="${postPage.totalPages>0}"
+    <div class="inline" th:if="${paging.totalPages>0}"
         th:each="pageNumber, iStat:${pageNumbers}"
     >
         <a th:href="@{/customers-paging(page=${pageNumber})}"
            th:text="${pageNumber}"
-           th:class="${pageNumber==postPage.number+1}? active"
+           th:class="${pageNumber==paging.number+1}? active"
         ></a>
     </div>
 </body>

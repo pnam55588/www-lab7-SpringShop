@@ -62,7 +62,7 @@ public class CustomerController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(10);
         Page<Customer> paging = customerService.findAll(currentPage-1,pageSize,"id","desc");
-        model.addAttribute("postPage", paging);
+        model.addAttribute("paging", paging);
         int totalPage = paging.getTotalPages();
         if(totalPage>0){
             List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPage).boxed().collect(Collectors.toList());
