@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Add customer</title>
+    <style>
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        /* Style for labels */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        /* Style for input fields */
+        input, select{
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Style for the submit button */
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Style for readonly input field */
+        input[readonly] {
+            background-color: #f2f2f2;
+            cursor: not-allowed;
+        }
+
+        /* Additional styling for responsiveness (adjust as needed) */
+        @media screen and (max-width: 600px) {
+            form {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+<h1>Add Product</h1>
+<!--/*@thymesVar id="customer" type=""*/-->
+<form th:action="@{/add-product}" method="POST" th:object="${product}">
+        <label>Id</label> <input placeholder="Id" th:field="*{id}"> <br>
+    <label>Name</label> <input placeholder="Name" th:field="*{name}"> <br>
+    <label>description</label> <input placeholder="description" th:field="*{description}"> <br>
+    <label>unit</label> <input  placeholder="unit" th:field="*{unit}"> <br>
+    <label>manufacturer</label> <input placeholder="manufacturer" th:field="*{manufacturer}"> <br>
+    <div th:object="${price}">
+        <input type="hidden" th:field="*{product}">
+        <input type="hidden" th:field="*{note}">
+        <input type="hidden" th:field="*{priceDateTime}">
+        <label>price</label> <input type="number" th:field="*{price}" required><br>
+    </div>
+    <label>Status</label>
+    <select th:field="*{status}">
+        <option th:each="status: ${listStatus}" th:value="${status}" th:text="${status}"></option>
+
+    </select>
+    <input type="submit" value="add">
+</form>
+
+
+</body>
+</html>

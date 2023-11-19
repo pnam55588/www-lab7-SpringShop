@@ -11,7 +11,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
-    private long order_id;
+    private long orderId;
 
     @Column(name = "order_date", nullable = false)
     private LocalDateTime orderDate;
@@ -38,11 +38,11 @@ public class Order {
     }
 
     public long getOrder_id() {
-        return order_id;
+        return orderId;
     }
 
     public void setOrder_id(long order_id) {
-        this.order_id = order_id;
+        this.orderId = order_id;
     }
 
     public LocalDateTime getOrderDate() {
@@ -80,7 +80,7 @@ public class Order {
     @Override
     public String toString() {
         return "Order{" +
-                "order_id=" + order_id +
+                "order_id=" + orderId +
                 ", orderDate=" + orderDate +
                 ", employee=" + employee +
                 ", customer=" + customer +

@@ -1,5 +1,6 @@
 package fit.iuh.lab7.frontend.controllers;
 
+import fit.iuh.lab7.enums.EmployeeStatus;
 import fit.iuh.lab7.models.Customer;
 import fit.iuh.lab7.models.Employee;
 import fit.iuh.lab7.services.CustomerService;
@@ -26,14 +27,14 @@ public class EmployeeController {
         long empId = Long.parseLong(id);
         Optional<Employee> employee = employeeService.findById(empId);
         model.addAttribute("employee", employee);
+        model.addAttribute("listStatus", EmployeeStatus.values());
         return "admin/employee-update";
     }
     @RequestMapping("/update-employee")
     public String showUpdatePage(@ModelAttribute("employee") Employee employee){
         try {
             employeeService.save(employee);
-
-            return "redirect:/employee-paging";
+            return "redirect:/employees-paging";
         }catch (Exception e){
             throw  new RuntimeException(e.getMessage());
         }
@@ -41,6 +42,7 @@ public class EmployeeController {
     @RequestMapping("/employee-add")
     public String showAddPage(Model model){
         model.addAttribute("employee", new Employee());
+        model.addAttribute("listStatus", EmployeeStatus.values());
         return "admin/employee-add";
     }
 
@@ -52,7 +54,10 @@ public class EmployeeController {
     @GetMapping("/delete-employee/{id}")
     public  String delete(@PathVariable("id") String id){
         long empId = Long.parseLong(id);
-        employeeService.delete(empId);
+        Optional<Employee> findEmp = employeeService.findById(empId);
+        Employee emp = findEmp.orElse(new Employee());
+        emp.setStatus(EmployeeStatus.TERMINATED);
+        employeeService.save(emp);
         return "redirect:/employees-paging";
     }
 

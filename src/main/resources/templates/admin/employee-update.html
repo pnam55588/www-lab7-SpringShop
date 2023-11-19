@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Add customer</title>
+    <style>
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        form {
+            width: 50%;
+            margin: 0 auto;
+        }
+
+        /* Style for labels */
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        /* Style for input fields */
+        input, select{
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Style for the submit button */
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        /* Style for readonly input field */
+        input[readonly] {
+            background-color: #f2f2f2;
+            cursor: not-allowed;
+        }
+
+        /* Additional styling for responsiveness (adjust as needed) */
+        @media screen and (max-width: 600px) {
+            form {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+<h1>Update Employee</h1>
+<!--/*@thymesVar id="customer" type=""*/-->
+<form th:action="@{/update-employee}" method="POST" th:object="${employee}">
+    <label>Id</label> <input placeholder="Id" th:field="*{id}" readonly> <br>
+    <label>Name</label> <input placeholder="Name" th:field="*{fullname}"> <br>
+    <label>Phone</label> <input type="number" placeholder="Phone" th:field="*{phone}"> <br>
+    <label>Email</label> <input type="email" placeholder="Email" th:field="*{email}"> <br>
+    <label>Address</label> <input placeholder="Address" th:field="*{address}"> <br>
+    <label>Date of birth</label> <input type="date" th:field="*{dob}" th:value="${dob}"> <br>
+    <label>Status</label>
+    <select th:field="*{status}">
+        <option th:each="status: ${listStatus}" th:value="${status}" th:text="${status}"></option>
+    </select>
+    <input type="submit" value="Update">
+</form>
+
+
+</body>
+</html>

@@ -16,7 +16,7 @@ public class ProductPrice {
     private Product product;
     @Id
     @Column(name = "price_date_time")
-    private LocalDateTime price_date_time;
+    private LocalDateTime priceDateTime;
     @Column(name = "price", nullable = false)
     private double price;
     @Column(name = "note")
@@ -25,9 +25,9 @@ public class ProductPrice {
     public ProductPrice() {
     }
 
-    public ProductPrice(Product product, LocalDateTime price_date_time, double price, String note) {
+    public ProductPrice(Product product, LocalDateTime priceDateTime, double price, String note) {
         this.product = product;
-        this.price_date_time = price_date_time;
+        this.priceDateTime = priceDateTime;
         this.price = price;
         this.note = note;
     }
@@ -40,12 +40,12 @@ public class ProductPrice {
         this.product = product;
     }
 
-    public LocalDateTime getPrice_date_time() {
-        return price_date_time;
+    public LocalDateTime getPriceDateTime() {
+        return priceDateTime;
     }
 
-    public void setPrice_date_time(LocalDateTime price_date_time) {
-        this.price_date_time = price_date_time;
+    public void setPriceDateTime(LocalDateTime price_date_time) {
+        this.priceDateTime = price_date_time;
     }
 
     public double getPrice() {
@@ -68,7 +68,7 @@ public class ProductPrice {
     public String toString() {
         return "ProductPrice{" +
                 "product=" + product +
-                ", price_date_time=" + price_date_time +
+                ", priceDateTime=" + priceDateTime +
                 ", price=" + price +
                 ", note='" + note + '\'' +
                 '}';

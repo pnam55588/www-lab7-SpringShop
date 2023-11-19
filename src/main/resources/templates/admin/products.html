@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Customer</title>
+    <title>Products</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,36 +56,36 @@
     </style>
 </head>
 <body>
-<h1>Employees</h1>
+<h1>Products</h1>
 <table>
     <tr>
         <th>Id</th>
         <th>Name</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>Address</th>
-        <th>Date of birth</th>
+        <th>description</th>
+        <th>unit</th>
+        <th>manufacturer</th>
+        <th>Price</th>
         <th>Status</th>
-        <th><button><a th:href="@{/employee-add}">Add</a></button></th>
+        <th><button><a th:href="@{/product-add}">Add</a></button></th>
     </tr>
-    <tr th:each="emp, iStat:${paging.content}">
-        <td th:text="${emp.id}"></td>
-        <td th:text="${emp.fullname}"></td>
-        <td th:text="${emp.phone}"></td>
-        <td th:text="${emp.email}"></td>
-        <td th:text="${emp.address}"></td>
-        <td th:text="${emp.dob}"></td>
-        <td th:text="${emp.status}"></td>
+    <tr th:each="prod, iStat:${paging.content}">
+        <td th:text="${prod.id}"></td>
+        <td th:text="${prod.name}"></td>
+        <td th:text="${prod.description}"></td>
+        <td th:text="${prod.unit}"></td>
+        <td th:text="${prod.manufacturer}"></td>
+        <td th:text="${prices[iStat.index].price}"></td>
+        <td th:text="${prod.status}"></td>
         <td>
-            <button><a th:href="@{/employee-update/{id}(id=${emp.id})}">Update</a></button>
-            <button><a th:href="@{/delete-employee/{id}(id=${emp.id})}">Delete</a></button>
+            <button><a th:href="@{/product-update/{id}(id=${prod.id})}">Update</a></button>
+            <button><a th:href="@{/delete-product/{id}(id=${prod.id})}">Delete</a></button>
         </td>
     </tr>
 </table>
 <div class="inline" th:if="${paging.totalPages>0}"
      th:each="pageNumber, iStat:${pageNumbers}"
 >
-    <a th:href="@{/employees-paging(page=${pageNumber})}"
+    <a th:href="@{/products-paging(page=${pageNumber})}"
        th:text="${pageNumber}"
        th:class="${pageNumber==paging.number+1}? active"
     ></a>

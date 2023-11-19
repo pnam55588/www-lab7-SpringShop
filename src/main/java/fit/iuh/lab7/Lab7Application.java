@@ -4,6 +4,7 @@ import fit.iuh.lab7.enums.EmployeeStatus;
 import fit.iuh.lab7.enums.ProductStatus;
 import fit.iuh.lab7.models.*;
 import fit.iuh.lab7.repositories.*;
+import lombok.RequiredArgsConstructor;
 import net.datafaker.Faker;
 import net.datafaker.providers.base.*;
 import net.datafaker.providers.base.Number;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 @SpringBootApplication
+@RequiredArgsConstructor
 public class Lab7Application {
 
     public static void main(String[] args) {
