@@ -33,6 +33,9 @@ public class ProductService {
     public List<ProductPrice> getPricesForProducts(List<Product> products) {
         return productPriceRepository.findProductPricesByProducts(products);
     }
+    public List<ProductPrice> getPricesForCart(List<Product> products) {
+        return productPriceRepository.findProductPricesByCart(products);
+    }
 
     public Product save(Product product) {
         return productRepository.save(product);
@@ -45,4 +48,8 @@ public class ProductService {
     public ProductPrice savePrice(ProductPrice price) {
         return productPriceRepository.save(price);
     }
+
+    public List<Product> findByListId(List<Long> listId){
+        return productRepository.findAllById(listId);
+    };
 }

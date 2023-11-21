@@ -1,11 +1,13 @@
 package fit.iuh.lab7.frontend.controllers;
 
-import fit.iuh.lab7.enums.EmployeeStatus;
 import fit.iuh.lab7.enums.ProductStatus;
-import fit.iuh.lab7.models.Employee;
-import fit.iuh.lab7.models.Product;
-import fit.iuh.lab7.models.ProductPrice;
+import fit.iuh.lab7.models.*;
+import fit.iuh.lab7.repositories.OrderDetailRepository;
+import fit.iuh.lab7.repositories.OrderRepository;
+import fit.iuh.lab7.repositories.ProductPriceRepository;
+import fit.iuh.lab7.repositories.ProductRepository;
 import fit.iuh.lab7.services.ProductService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -13,8 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -23,6 +24,10 @@ import java.util.stream.IntStream;
 public class ProductController {
 
     private final ProductService productService;
+    private final ProductPriceRepository productPriceRepository;
+    private final OrderDetailRepository orderDetailRepository;
+    private final OrderRepository orderRepository;
+
 
     @RequestMapping("/product-update/{id}")
     public String showUpdatePage(Model model, @PathVariable("id") String id){
@@ -39,7 +44,6 @@ public class ProductController {
         try {
             productService.save(product);
             price.setPriceDateTime(LocalDateTime.now());
-//            System.out.println(price);
             productService.savePrice(price);
             return "redirect:/products-paging";
         }catch (Exception e){
@@ -55,8 +59,12 @@ public class ProductController {
     }
 
     @PostMapping("/add-product")
-    public String add(@ModelAttribute("product") Product product) {
+    public String add(@ModelAttribute("product") Product product, @ModelAttribute("price") ProductPrice price) {
         productService.save(product);
+        price.setProduct(product);
+        price.setPriceDateTime(LocalDateTime.now());
+        System.out.println(price);
+        productPriceRepository.save(price);
         return "redirect:/products-paging";
     }
     @GetMapping("/delete-product/{id}")
@@ -84,7 +92,85 @@ public class ProductController {
             List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPage).boxed().collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-
         return "admin/products";
+    }
+
+    @GetMapping("/home")
+    public String showProductsUserPage(Model model,
+                                       @RequestParam("page") Optional<Integer> page,
+                                       @RequestParam("size") Optional<Integer> size){
+        int currentPage = page.orElse(1);
+        int pageSize = size.orElse(10);
+        Page<Product> paging = productService.findAll(currentPage-1,pageSize,"id","desc");
+        List<ProductPrice> prices = productService.getPricesForProducts(paging.getContent());
+        model.addAttribute("prices", prices);
+        model.addAttribute("paging", paging);
+        int totalPage = paging.getTotalPages();
+        if(totalPage>0){
+            List<Integer> pageNumbers = IntStream.rangeClosed(1,totalPage).boxed().collect(Collectors.toList());
+            model.addAttribute("pageNumbers", pageNumbers);
+        }
+        return "user/products";
+    }
+    @PostMapping("/add-to-cart")
+    public String addToCart(HttpSession session, @RequestParam("productId") String productId ){
+        long id = Long.parseLong(productId);
+        Map<Long,Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
+        if(cart==null){
+            cart = new HashMap<>();
+        }
+        if(!cart.containsKey(id)){
+            cart.put(id,1);
+        }
+        else {
+            cart.put(id,cart.get(id)+1);
+        }
+        System.out.println("-----------");
+        cart.forEach((k,v) -> {System.out.println(k+" : "+v.toString());});
+        session.setAttribute("cart",cart);
+        return "redirect:/home";
+    }
+    @GetMapping("/cart")
+    public String showCartPage(Model model, HttpSession session){
+        Map<Long,Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
+        if(cart==null){
+            System.out.println("cart is empty");
+            return  "user/cart";
+        }
+        Set<Long> productSet = cart.keySet();
+        List<Product> products = productService.findByListId(productSet.stream().toList());
+        List<ProductPrice> prices = productService.getPricesForCart(products);
+        List<Integer> quantities = cart.values().stream().toList();
+        model.addAttribute("prices", prices);
+        model.addAttribute("products", products);
+        model.addAttribute("quantities", quantities);
+        return "user/cart";
+    }
+    @GetMapping("/remove-from-cart/{id}")
+    public String removeItemFromCart(HttpSession session, @PathVariable("id") String productId ){
+        Map<Long,Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
+        long id = Long.parseLong(productId);
+        cart.remove(id);
+        session.setAttribute("cart",cart);
+        return "redirect:/cart";
+    }
+    @GetMapping("/checkout-cart")
+    public String checkoutCart(HttpSession session){
+        Random random = new Random();
+        Map<Long,Integer> cart = (Map<Long, Integer>) session.getAttribute("cart");
+        Employee employee = new Employee();
+        employee.setId(random.nextInt(99)+1);
+        Customer customer = new Customer();
+        customer.setId(random.nextInt(99)+1);
+        Order order = new Order(LocalDateTime.now(),employee,customer);
+        orderRepository.save(order);
+        cart.forEach((k,v)->{
+            ProductPrice price = productService.getPrice(k);
+            Product product = productService.findById(k).orElse(null);
+            OrderDetail orderDetail = new OrderDetail(v,price.getPrice(),"",order,product);
+            orderDetailRepository.save(orderDetail);
+        });
+        session.removeAttribute("cart");
+        return "redirect:/cart";
     }
 }

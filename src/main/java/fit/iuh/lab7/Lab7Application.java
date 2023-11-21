@@ -84,7 +84,7 @@ public class Lab7Application {
                 );
                 orderRepository.save(order);
                 OrderDetail orderDetail = new OrderDetail(
-                        random.nextInt(3),
+                        random.nextInt(3)+1,
                         number.randomDouble(2,100,1000),
                         "",
                         order,

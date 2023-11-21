@@ -2,9 +2,190 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Online Shop</title>
+    <!-- Add your CSS link here for styling -->
+    <style>
+        /* Reset some default styles */
+        body, h1, h2, p, ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        article {
+            width: 300px;
+            margin: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        article:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        article img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        article h2 {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        article p {
+            color: #555;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 500px; /* Adjust this value as needed */
+        }
+
+        article button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 10px;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            section {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            article {
+                width: 100%;
+            }
+        }
+        .inline{
+            margin-top: 20px;
+            margin-bottom: 100px;
+            float: left;
+            display: inline-block;
+        }
+        a{
+            text-decoration: none;
+            color: #333;
+        }
+        .inline a {
+            padding: 8px;
+            margin: 2px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .cart-button {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+        }
+
+        /* Add styling to the button as needed */
+        .cart-button button {
+            background-color: #ff0000; /* Bright red color */
+            color: white;
+            padding: 15px; /* Adjust padding for size */
+            border: none;
+            border-radius: 50%; /* Make it circular */
+            cursor: pointer;
+            width: 80px; /* Set a fixed width */
+            height: 80px; /* Set a fixed height */
+            transition: background-color 0.3s; /* Add a smooth transition */
+        }
+
+        /* Add hover effect */
+        .cart-button button:hover {
+            background-color: #cc0000; /* Darker red color on hover */
+        }
+    </style>
 </head>
 <body>
+
+<header>
+    <h1>My Online Shop</h1>
+    <!-- Add navigation links here -->
+</header>
+
+<section>
+    <article th:each="product, iStat: ${paging.content}">
+        <img src="https://f.hellowork.com/blogdumoderateur/2013/04/tineye-240x237.jpg">
+        <h2 th:text="${product.name}"></h2>
+        <p class="description" th:text="${product.description}"></p>
+        <p>$<span th:text="${prices[iStat.index].price}"></span></p>
+        <form th:action="@{/add-to-cart}" method="post">
+            <input type="hidden" name="productId" th:value="${product.id}">
+            <button>Add to Cart</button>
+        </form>
+    </article>
+
+    <!-- Add more product articles as needed -->
+</section>
+
+<div class="cart-button">
+    <button><a th:href="@{/cart}">Cart</a></button>
+</div>
+
+<div class="inline" th:if="${paging.totalPages>0}"
+     th:each="pageNumber, iStat:${pageNumbers}"
+>
+    <a th:href="@{/products-paging(page=${pageNumber})}"
+       th:text="${pageNumber}"
+       th:class="${pageNumber==paging.number+1}? active"
+    ></a>
+</div>
+
+<footer>
+    <p>&copy; 2023 My Online Shop. All rights reserved.</p>
+</footer>
+
+<!-- Add your JavaScript link here for interactivity -->
 
 </body>
 </html>

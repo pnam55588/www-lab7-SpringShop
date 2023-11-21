@@ -57,7 +57,7 @@
 <h1>Add Product</h1>
 <!--/*@thymesVar id="customer" type=""*/-->
 <form th:action="@{/add-product}" method="POST" th:object="${product}">
-        <label>Id</label> <input placeholder="Id" th:field="*{id}"> <br>
+<!--        <label>Id</label> <input placeholder="Id" th:field="*{id}"> <br>-->
     <label>Name</label> <input placeholder="Name" th:field="*{name}"> <br>
     <label>description</label> <input placeholder="description" th:field="*{description}"> <br>
     <label>unit</label> <input  placeholder="unit" th:field="*{unit}"> <br>

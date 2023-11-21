@@ -17,5 +17,8 @@ public interface ProductPriceRepository extends JpaRepository<ProductPrice, Prod
             "(select pp.product, max(pp.priceDateTime) from ProductPrice pp where pp.product in :products group by pp.product)" +
             "order by pr.product.id desc ")
     List<ProductPrice> findProductPricesByProducts(@Param("products") List<Product> products);
-
+    @Query("select pr from ProductPrice pr where (pr.product,pr.priceDateTime) in " +
+            "(select pp.product, max(pp.priceDateTime) from ProductPrice pp where pp.product in :products group by pp.product)" +
+            "order by pr.product.id asc ")
+    List<ProductPrice> findProductPricesByCart(@Param("products") List<Product> products);
 }
