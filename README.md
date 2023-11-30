@@ -1,4 +1,6 @@
 # www-lab7-SpringShop
+# Database diagram
+![image](https://github.com/pnam55588/www-lab7-SpringShop/assets/98084540/3b1e2431-05f0-47d7-9de9-111c39d66ec1)
 
 ### Customers page
 ![image](https://github.com/pnam55588/www-lab7-SpringShop/assets/98084540/abe7f5bc-4f41-4399-909f-28c53a39fcc0)
